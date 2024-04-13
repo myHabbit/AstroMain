@@ -34,7 +34,6 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       <p>大家好！欢迎来到我的个人博客。</p>
       <p>在这个博客中，我将写下我的项目（我做什么/我是如何做的）、我的个人经历和一些面试笔记等。</p>
       {
-        // only display if at least one social link is enabled
         socialCount > 0 && (
           <div class="social-wrapper">
             <div class="social-links">Social Links:</div>
