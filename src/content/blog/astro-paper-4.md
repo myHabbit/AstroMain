@@ -10,25 +10,25 @@ tags:
 description: "AstroPaper v4: ensuring a smoother and more feature-rich blogging experience."
 ---
 
-Hello everyone! Wishing you a happy New Year 🎉 and all the best for 2024! We're excited to announce the release of AstroPaper v4, a significant update that introduces a range of new features, improvements, and bug fixes to elevate your blogging experience. A big thank you to all the contributors for their valuable input and efforts in making version 4 possible!
+AstroPaper v4 的发布🎉，这是一项重大更新，引入了一系列新功能、改进和错误修复，以提升您的博客体验。
 
 ![AstroPaper v4](@assets/images/AstroPaper-v4.png)
 
 ## Table of contents
 
-## Major Changes
+## 主要变化
 
-### Upgrade to Astro v4 [#202](https://github.com/satnaing/astro-paper/pull/202)
+### 升级到 Astro v4 [#202](https://github.com/satnaing/astro-paper/pull/202)
 
-AstroPaper now leverages the power and capabilities of Astro v4. However, it’s a subtle upgrade and won’t break most Astro users.
+AstroPaper 现在利用了 Astro v4 的强大功能。然而，这是一个微妙的升级，不会破坏大多数 Astro 用户。
 
 ![Astro v4](https://astro.build/_astro/header-astro-4.GLp8HjfV.webp)
 
-### Replace `postSlug` with Astro Content `slug` [#197](https://github.com/satnaing/astro-paper/pull/197)
+### 替换为 Astro 内容 `slug` [#197](https://github.com/satnaing/astro-paper/pull/197)
 
-The `postSlug` in the blog content schema is no longer available in AstroPaper v4. Initially Astro doesn't have a `slug` mechanism and thus we have to figure it out on our own. Since Astro v3, it supports content collection and slug features. Now, we believe it's time to adopt Astro's out-of-the-box `slug` feature.
+博客内容模式在 AstroPaper v4 中不再可用。最初 Astro 没有机制，因此我们必须自己弄清楚。从 Astro v3 开始，它支持内容收集和 slug 功能。现在，我们认为是时候采用 Astro 的开箱即用功能了。
 
-**_file: src/content/blog/astro-paper-4.md_**
+** 文件: src/content/blog/astro-paper-4.md_**
 
 ```bash
 ---
@@ -40,85 +40,73 @@ slug: "astro-paper-v4" # if slug is not specified, it will be 'astro-paper-4' (f
 ---
 ```
 
-The behavior of the `slug` is slightly different now. In the previous versions of AstroPaper, if the `postSlug` is not specified in a blog post (markdown file), the title of that blog post would be slugified and used as the `slug`. However, in AstroPaper v4, if the `slug` field is not specified, the markdown file name will be used as the `slug`. One thing to keep in mind is that the `slug` field can be omitted, but it cannot be an empty string (slug: "" ❌).
+现在的行为略有不同。在以前版本的 AstroPaper 中，如果未在博客文章（Markdown 文件）中指定 ，则该博客文章的标题将被 slug 化并用作 .但是，在 AstroPaper v4 中，如果未指定该字段，则 Markdown 文件名将用作 .要记住的一件事是，可以省略该字段，但它不能是空字符串（slug： “” ❌ ）。
 
-If you're upgrading AstroPaper from v3 to v4, make sure to replace `postSlug` in your `src/content/blog/*.md` files with `slug`.
+如果您要将 AstroPaper 从 v3 升级到 v4，请确保将文件中的`src/content/blog/*.md` files with `slug`.
 
-## New Features
+## 新功能
 
-### Add code-snippets for content creation [#206](https://github.com/satnaing/astro-paper/pull/206)
+### 为内容创建添加代码片段 [#206](https://github.com/satnaing/astro-paper/pull/206)
 
-AstroPaper now includes VSCode snippets for new blog posts, eliminating the need for manual copy/pasting of the frontmatter and content structure (table of contents, heading, excerpt, etc.).
+AstroPaper 现在包含用于新博客文章的 VSCode 片段，无需手动复制/粘贴前言和内容结构（目录、标题、摘录等）
 
-Read more about VSCode Snippets [here](https://code.visualstudio.com/docs/editor/userdefinedsnippets#:~:text=In%20Visual%20Studio%20Code%2C%20snippets,Snippet%20in%20the%20Command%20Palette).
 
-<video autoplay muted="muted" controls plays-inline="true" class="border border-skin-line">
-  <source src="https://github.com/satnaing/astro-paper/assets/53733092/136f1903-bade-40a2-b6bb-285a3c726350" type="video/mp4">
-</video>
+### 在博客文章中添加修改后的日期时间 [#195](https://github.com/satnaing/astro-paper/pull/195)
 
-### Add Modified Datetime in Blog Posts [#195](https://github.com/satnaing/astro-paper/pull/195)
+通过在博客文章中显示修改后的日期时间，让读者了解最新更新。这不仅灌输了用户对文章新鲜度的信任，还有助于改善博客的SEO。
 
-Keep readers informed about the latest updates by displaying the modified datetime in blog posts. This not only instills user trust in the freshness of the articles but also contributes to improved SEO for the blog.
 
-![Last Modified Date feature in AstroPaper](https://github.com/satnaing/astro-paper/assets/53733092/cc89585e-148e-444d-9da1-0d496e867175)
+如果您进行了修改，则可以在博客文章中添加一个。现在，帖子的排序行为略有不同。所有帖子都按 和 排序。如果一个帖子同时具有 a 和 ，则其排序位置将由 决定。如果没有，将仅考虑确定帖子的排序顺序.如果没有，将仅考虑确定帖子的排序顺序。
 
-You can add a `modDatetime` to your blog post if you've made modifications. Now, the sorting behavior of the posts is slightly different. All posts are sorted by both `pubDatetime` and `modDatetime`. If a post has both a `pubDatetime` and `modDatetime`, its sorting position will be determined by the `modDatetime`. If not, only `pubDatetime` will be considered to determine the post's sorting order.
+### 实现返回顶部按钮 [#188](https://github.com/satnaing/astro-paper/pull/188)
 
-### Implement Back-to-Top Button [#188](https://github.com/satnaing/astro-paper/pull/188)
+使用新实现的返回顶部按钮增强用户对博客详细信息文章的导航。
 
-Enhance user navigation on your blog detail post with the newly implemented back-to-top button.
 
-![Back to top button in AstroPaper](https://github.com/satnaing/astro-paper/assets/53733092/79854957-7877-4f19-936e-ad994b772074)
+### 在标签帖子中添加分页 [#201](https://github.com/satnaing/astro-paper/pull/201)
 
-### Add Pagination in Tag Posts [#201](https://github.com/satnaing/astro-paper/pull/201)
+通过在标签帖子中添加分页来改进内容组织和导航，使用户更容易浏览相关内容。这确保了如果一个标签有很多帖子，读者不会被所有与标签相关的帖子所淹没。
 
-Improve content organization and navigation with the addition of pagination in tag posts, making it easier for users to explore related content. This ensures that if a tag has many posts, readers won't be overwhelmed by all the tag-related posts.
 
-<video autoplay loop="loop" muted="muted" plays-inline="true" class="border border-skin-line">
-  <source src="https://github.com/satnaing/astro-paper/assets/53733092/9bad87f5-dcf5-4b79-b67a-d6c7244cd616" type="video/mp4">
-</video>
+### 动态生成robots.txt[#130](https://github.com/satnaing/astro-paper/pull/130)
 
-### Dynamically Generate robots.txt [#130](https://github.com/satnaing/astro-paper/pull/130)
+AstroPaper v4 现在动态生成robots.txt文件，让您更好地控制搜索引擎索引和网络爬虫。此外，站点地图URL也将添加到文件中。`robot.txt` file.
 
-AstroPaper v4 now dynamically generates the robots.txt file, giving you more control over search engine indexing and web crawling. Besides, sitemap URL will also be added inside `robot.txt` file.
+### 添加 docker-compose 文件 [#174](https://github.com/satnaing/astro-paper/pull/174)
 
-### Add Docker-Compose File [#174](https://github.com/satnaing/astro-paper/pull/174)
+现在，通过添加Docker-Compose文件，管理您的AstroPaper环境比以往任何时候都更容易，从而简化了部署和配置。
 
-Managing your AstroPaper environment is now easier than ever with the addition of a Docker-Compose file, simplifying deployment and configuration.
+## 重构和错误修复
 
-## Refactoring & Bug Fixes
+### 将 Slugified 标题替换为 Unslugified 标签名称 [#198](https://github.com/satnaing/astro-paper/pull/198)
 
-### Replace Slugified Title with Unslugified Tag Name [#198](https://github.com/satnaing/astro-paper/pull/198)
-
-To improve clarity, user experience and SEO, titles (`Tag: some-tag`) in tag page are no longer slugified (`Tag: Some Tag`).
+为了提高清晰度、用户体验和 SEO，标签页面中的标题(`Tag: some-tag`) 不再被涂抹 (`Tag: Some Tag`).
 
 ![Unslugified Tag Names](https://github.com/satnaing/astro-paper/assets/53733092/2fe90d6e-ec52-467b-9c44-95009b3ae0b7)
 
-### Implement 100svh for Min-Height ([79d569d](https://github.com/satnaing/astro-paper/commit/79d569d053036f2113519f41b0d257523d035b76))
+### 实现 100svh 最小高度 ([79d569d](https://github.com/satnaing/astro-paper/commit/79d569d053036f2113519f41b0d257523d035b76))
 
-We've updated the min-height on the body to use 100svh, offering a better UX for mobile users.
+我们更新了机身上的最小高度，使用 100svh，为移动用户提供更好的用户体验。
 
-### Update Site URL as Single Source of Truth [#143](https://github.com/satnaing/astro-paper/pull/143)
+### 将网站 URL 更新为单一事实来源 [#143](https://github.com/satnaing/astro-paper/pull/143)
 
-The site URL is now a single source of truth, streamlining configuration and avoiding inconsistencies. Read more at this [PR](https://github.com/satnaing/astro-paper/pull/143) and its related issue(s).
+站点 URL 现在是单一事实来源，可简化配置并避免不一致。在此 [PR](https://github.com/satnaing/astro-paper/pull/143) 及其相关问题中阅读更多内容。
 
-### Solve Invisible Text Code Block Issue in Light Mode [#163](https://github.com/satnaing/astro-paper/pull/163)
+### 解决灯光模式下的不可见文本代码块问题  [#163](https://github.com/satnaing/astro-paper/pull/163)
 
-We've fixed the invisible text code block issue in light mode.
+我们修复了在浅色模式下不可见的文本代码块问题。
 
-### Decode Unicode Tag Characters in Breadcrumb [#175](https://github.com/satnaing/astro-paper/pull/175)
+### 解码 Breadcrumb 中的 Unicode 标记字符 [#175](https://github.com/satnaing/astro-paper/pull/175)
 
-The last part of Tag in the breadcrumb is now decoded, making non-English Unicode characters display better.
+痕迹导航中 Tag 的最后一部分现在已解码，使非英语 Unicode 字符显示得更好。
 
-### Update LOCALE Config to Cover Overall Locales ([cd02b04](https://github.com/satnaing/astro-paper/commit/cd02b047d2b5e3b4a2940c0ff30568cdebcec0b8))
+### 更新 LOCALE 配置以涵盖整个区域设置 ([cd02b04](https://github.com/satnaing/astro-paper/commit/cd02b047d2b5e3b4a2940c0ff30568cdebcec0b8))
 
-The LOCALE configuration has been updated to cover a broader range of locales, catering to a more diverse audience.
+LOCALE 配置已更新，以涵盖更广泛的区域设置，以满足更多样化的受众。
 
-## Outtro
+## 总结
 
-We believe these updates will significantly elevate your AstroPaper experience. Thank you to everyone who contributed, solved issues, and gave stars to AstroPaper. We look forward to seeing the amazing content you create with AstroPaper v4!
+我们相信这些更新将大大提升您的AstroPaper体验。感谢所有为AstroPaper做出贡献、解决问题并给予星星的人。我们期待看到您使用 AstroPaper v4 创建的惊人内容！
 
-Happy Blogging!
+祝您博客愉快！
 
-[Sat Naing](https://satnaing.dev) <br/>
-Creator of AstroPaper
