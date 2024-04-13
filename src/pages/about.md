@@ -26,6 +26,3 @@ title: "About"
 - 超快性能
 - 草稿帖子
 - 分页
-
-If you like this theme, you can star/contribute to the [repo](https://github.com/satnaing/astro-paper).  
-Or you can even give any feedback via my [email](mailto:contact@satnaing.dev).
