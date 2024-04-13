@@ -12,9 +12,8 @@ description:
  Some carefully crafted predefined color schemes for blog themes.
 ---
 
-我为这个博客主题制作了一些预定义的配色方案。您可以将这些配色方案替换为原始配色方案。
+我为这个博客主题制作了一些预定义的配色方案。可以将这些配色方案替换为原始配色方案。
 
-如果您不知道如何配置配色方案，请查看 [这篇文章](https://astro-paper.pages.dev/posts/customizing-astropaper-theme-color-schemes/).
 
 ## Table of contents
 

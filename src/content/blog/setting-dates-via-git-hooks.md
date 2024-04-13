@@ -1,194 +1,359 @@
 ---
 author: Simon Smale
-pubDatetime: 2024-01-03T20:40:08Z
-modDatetime: 2024-01-08T18:59:05Z
-title: How to use Git Hooks to set Created and Modified Dates
+pubDatetime: 2024-03-07T20:40:08Z
+modDatetime: 2024-03-20T18:59:05Z
+title: Typed.js
 featured: false
 draft: false
 tags:
   - docs
-  - FAQ
+  - javascript
 canonicalURL: https://smale.codes/posts/setting-dates-via-git-hooks/
 description: How to use Git Hooks to set your Created and Modified Dates on AstroPaper
 ---
 
-In this post I will explain how to use the pre-commit Git hook to automate the input of the created (`pubDatetime`) and modified (`modDatetime`) in the AstroPaper blog theme frontmatter
+`Typed.js`是一个 JavaScript 打字动画库，它有着非常炫酷的打字效果。输入任何字符串，然后观看它 以您设置的速度键入，退格键入的内容，然后 为您设置的字符串数开始一个新句子。类似于打字机一样的效果，逐字逐句地显示文本，给用户一种逐渐浮现的感觉。
 
-## Table of contents
+跟着我一起去了解它吧，Let go！
 
-## Have them Everywhere
+## 目录
 
-[Git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) are great for automating tasks like [adding](https://gist.github.com/SSmale/3b380e5bbed3233159fb7031451726ea) or [checking](https://itnext.io/using-git-hooks-to-enforce-branch-naming-policy-ffd81fa01e5e) the branch name to your commit messages or [stopping you committing plain text secrets](https://gist.github.com/SSmale/367deee757a9b2e119d241e120249000). Their biggest flaw is that client-side hooks are per machine.
+- [目录](#目录)
+- [安装](#安装)
+- [使用](#使用)
+- [案例示范](#案例示范)
 
-You can get around this by having a `hooks` directory and manually copy them to the `.git/hooks` directory or set up a symlink, but this all requires you to remember to set it up, and that is not something I am good at doing.
 
-As this project uses npm, we are able to make use of a package called [Husky](https://typicode.github.io/husky/) (this is already installed in AstroPaper) to automatically install the hooks for us.
 
-## The Hook
+## 安装
 
-As we want this hook to run as we commit the code to update the dates and then have that as part of our change we are going to use the `pre-commit` hook. This has already been set up by this AstroPaper project, but if it hadn't, you would run `npx husky add .husky/pre-commit 'echo "This is our new pre-commit hook"'`.
+- CDN
 
-Navigating to the `hooks/pre-commit` file, we are going to add one or both of the following snippets.
-
-### Updating the modified date when a file is edited
-
----
-
-UPDATE:
-
-This section has been updated with a new version of the hook that is smarter. It will now not increment the `modDatetime` until the post is published. On the first publish, set the draft status to `first` and watch the magic happen.
-
----
-
-```shell
-# Modified files, update the modDatetime
-git diff --cached --name-status |
-grep -i '^M.*\.md$' |
-while read _ file; do
-  filecontent=$(cat "$file")
-  frontmatter=$(echo "$filecontent" | awk -v RS='---' 'NR==2{print}')
-  draft=$(echo "$frontmatter" | awk '/^draft: /{print $2}')
-  if [ "$draft" = "false" ]; then
-    echo "$file modDateTime updated"
-    cat $file | sed "/---.*/,/---.*/s/^modDatetime:.*$/modDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")/" > tmp
-    mv tmp $file
-    git add $file
-  fi
-  if [ "$draft" = "first" ]; then
-    echo "First release of $file, draft set to false and modDateTime removed"
-    cat $file | sed "/---.*/,/---.*/s/^modDatetime:.*$/modDatetime:/" | sed "/---.*/,/---.*/s/^draft:.*$/draft: false/" > tmp
-    mv tmp $file
-    git add $file
-  fi
-done
+```bash
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.9"></script>
 ```
 
-`git diff --cached --name-status` gets the files from git that have been staged for committing. The output looks like:
+- ESModule（选一个）:
 
-```shell
-A       src/content/blog/setting-dates-via-git-hooks.md
+```bash
+npm install typed.js
+yarn add typed.js
+bower install typed.js
 ```
 
-The letter at the start denotes what action has been taken, in the above example the file has been added. Modified files have `M`
 
-We pipe that output into the grep command where we are looking at each line to find that have been modified. The line needs to start with `M` (`^(M)`), have any number of characters after that (`.*`) and end with the `.md` file extension (`.(md)$`).This is going to filter out the lines that are not modified markdown files `egrep -i "^(M).*\.(md)$"`.
+## 使用
 
----
+- CDN使用
 
-#### Improvement - More Explicit
+要通过`script`标签直接在浏览器中使用
 
-This could be added to only look for files that we markdown files in the `blog` directory, as these are the only ones that will have the right frontmatter
+```html
+  <span id="element"></span>
 
----
+  <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
 
-The regex will capture the two parts, the letter and the file path. We are going to pipe this list into a while loop to iterate over the matching lines and assign the letter to `a` and the path to `b`. We are going to ignore `a` for now.
-
-To know the draft staus of the file, we need its frontmatter. In the following code we are using `cat` to get the content of the file, then using `awk` to split the file on the frontmatter separator (`---`) and taking the second block (the fonmtmatter, the bit between the `---`). From here we are using `awk` again to find the draft key and print is value.
-
-```shell
-  filecontent=$(cat "$file")
-  frontmatter=$(echo "$filecontent" | awk -v RS='---' 'NR==2{print}')
-  draft=$(echo "$frontmatter" | awk '/^draft: /{print $2}')
+  <script>
+    var typed = new Typed('#element', {
+      strings: ['<i>First</i> sentence.', '&amp; a second sentence.'],
+      typeSpeed: 50,
+    });
+  </script>
+</body>
 ```
 
-Now we have the value for `draft` we are going to do 1 of 3 things, set the modDatetime to now (when draft is false `if [ "$draft" = "false" ]; then`), clear the modDatetime and set draft to false (when draft is set to first `if [ "$draft" = "first" ]; then`), or nothing (in any other case).
 
-The next part with the sed command is a bit magical to me as I don't often use it, it was copied from [another blog post on doing something similar](https://mademistakes.com/notes/adding-last-modified-timestamps-with-git/). In essence, it is looking inside the frontmatter tags (`---`) of the file to find the `pubDatetime:` key, getting the full line and replacing it with the `pubDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")/"` same key again and the current datetime formatted correctly.
+要与 Vite 或者 Webpack 等构建工具一起使用，在`Vue`或在`React`应用程序中使用。
 
-This replacement is in the context of the whole file so we put that into a temporary file (`> tmp`), then we move (`mv`) the new file into the location of the old file, overwriting it. This is then added to git ready to be committed as if we made the change ourselves.
 
----
+- VueJS 用法
 
-#### NOTE
+```js
 
-For the `sed` to work the frontmatter needs to already have the `modDatetime` key in the frontmatter. There are some other changes you will need to make for the app to build with a blank date, see [further down](#empty-moddatetime-changes)
+import Typed from 'typed.js';
 
----
+const typed = new Typed('#element', {
+  strings: ['<i>First</i> sentence.', '&amp; a second sentence.'],
+  typeSpeed: 50,
+});
 
-### Adding the Date for new files
-
-Adding the date for a new file is the same process as above, but this time we are looking for lines that have been added (`A`) and we are going to replace the `pubDatetime` value.
-
-```shell
-# New files, add/update the pubDatetime
-git diff --cached --name-status | egrep -i "^(A).*\.(md)$" | while read a b; do
-  cat $b | sed "/---.*/,/---.*/s/^pubDatetime:.*$/pubDatetime: $(date -u "+%Y-%m-%dT%H:%M:%SZ")/" > tmp
-  mv tmp $b
-  git add $b
-done
 ```
 
----
 
-#### Improvement - Only Loop Once
+- ReactJS 用法
 
-We could use the `a` variable to switch inside the loop and either update the `modDatetime` or add the `pubDatetime` in one loop.
+```js
 
----
+import React from 'react';
+import Typed from 'typed.js';
 
-## Populating the frontmatter
+function MyComponent() {
+  const el = React.useRef(null);
 
-If your IDE supports snippets then there is the option to create a custom snippet to populate the frontmatter.[In AstroPaper v4 will come with one for VSCode by default.](https://github.com/satnaing/astro-paper/pull/206)
+  React.useEffect(() => {
+    const typed = new Typed(el.current, {
+      strings: ['<i>First</i> sentence.', '&amp; a second sentence.'],
+      typeSpeed: 50,
+    });
 
-<video autoplay muted="muted" controls plays-inline="true" class="border border-skin-line">
-  <source src="https://github.com/satnaing/astro-paper/assets/17761689/e13babbc-2d78-405d-8758-ca31915e41b0" type="video/mp4">
-</video>
+    return () => {
+      typed.destroy();
+    };
+  }, []);
 
-## Empty `modDatetime` changes
+  return (
+    <div className="App">
+      <span ref={el} />
+    </div>
+  );
+}
+export default MyComponent;
 
-To allow Astro to compile the markdown and do its thing, it needs to know what is expected in the frontmatter. It does this via the config in `src/content/config.ts`
+```
 
-To allow the key to be there with no value we need to edit line 10 to add the `.nullable()` function.
 
-```typescript
-const blog = defineCollection({
-  type: "content",
-  schema: ({ image }) =>
-    z.object({
-      author: z.string().default(SITE.author),
-      pubDatetime: z.date(),
--     modDatetime: z.date().optional(),
-+     modDatetime: z.date().optional().nullable(),
-      title: z.string(),
-      featured: z.boolean().optional(),
-      draft: z.boolean().optional(),
-      tags: z.array(z.string()).default(["others"]),
-      ogImage: image()
-        .refine(img => img.width >= 1200 && img.height >= 630, {
-          message: "OpenGraph image must be at least 1200 X 630 pixels!",
-        })
-        .or(z.string())
-        .optional(),
-      description: z.string(),
-      canonicalURL: z.string().optional(),
-      readingTime: z.string().optional(),
-    }),
+以上两种方式在使用前必须得在项目中进行安装。
+
+```js
+import Typed from 'typed.js';
+```
+
+
+- 类型暂停
+
+您可以通过包含转义字符在字符串中间暂停一段时间。
+
+```js
+var typed = new Typed('#element', {
+  strings: ['First ^1000 sentence.', 'Second sentence.'],
 });
 ```
 
-To stop the IDE complaining in the blog engine files I have also done the following:
+- 智能后退间距
+  
+在以下示例中，这只会退格“This is a”后面的单词
 
-1. added `| null` to line 15 in `src/layouts/Layout.astro` so that it looks like
+```js
+var typed = new Typed('#element', {
+  strings: ['This is a JavaScript library', 'This is an ES6 module'],
+  smartBackspace: true, // Default value
+});
+```
 
-```typescript
-export interface Props {
-  title?: string;
-  author?: string;
-  description?: string;
-  ogImage?: string;
-  canonicalURL?: string;
-  pubDatetime?: Date;
-  modDatetime?: Date | null;
+
+
+- 批量打字
+
+以下示例将模拟终端在键入命令并查看其结果时的行为方式。
+
+```js
+
+var typed = new Typed('#element', {
+  strings: ['git push --force ^1000\n `pushed to origin with option force`'],
+});
+
+```
+
+
+- CSS
+
+CSS 动画是在 JavaScript 中初始化的基础上构建的。但是，您可以随意自定义它们！这些类是：
+
+```css
+
+.typed-cursor {
+}
+
+
+.typed-fade-out {
 }
 ```
 
-<!-- This needs to be 2 as it doesn't pick it up with the code block -->
 
-2. added `| null` to line 5 in `src/components/Datetime.tsx` so that it looks like
+## 案例示范
 
-```typescript
-interface DatetimesProps {
-  pubDatetime: string | Date;
-  modDatetime: string | Date | undefined | null;
-}
+```js
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.9"></script>
+  </head>
+  <body>
+    <div class="element"></div>
+
+    <script type="text/javascript">
+      window.onload = function () {
+        var typed = new Typed(".element", {
+          /**
+           * @property {array} strings 要键入的字符串
+           * @property {string} stringsElement 包含字符串子元素的元素的ID
+           */
+          strings: ['这些是默认值...', '你知道你应该做什么吗？', '使用你自己的吧！', '祝你有个美好的一天！'],
+          stringsElement: null,
+
+          /**
+           * @property {number} typeSpeed 输入速度，以毫秒为单位
+           */
+          typeSpeed: 100,
+
+          /**
+           * @property {number} startDelay 键入之前的时间以毫秒开始
+           */
+          startDelay: 0,
+
+          /**
+           * @property {number} backSpeed 退格速度，以毫秒为单位
+           */
+          backSpeed: 100,
+
+          /**
+           * @property {boolean} smartBackspace 是否只退格与前一个字符串不匹配的内容
+           */
+          smartBackspace: true,
+
+          /**
+           * @property {boolean} shuffle 是否洗牌
+           */
+          shuffle: false,
+
+          /**
+           * @property {number} backDelay 退回之前的时间，以毫秒为单位
+           */
+          backDelay: 700,
+
+          /**
+           * @property {boolean} fadeOut 是否用淡出替代空格
+           * @property {string} fadeOutClass 用于淡入淡出动画的css类
+           * @property {boolean} fadeOutDelay 以毫秒为单位淡出延迟
+           */
+          fadeOut: false,
+          fadeOutClass: 'typed-fade-out',
+          fadeOutDelay: 500,
+
+          /**
+           * @property {boolean} loop 是否循环字符串
+           * @property {number} loopCount 循环次数
+           */
+          loop: false,
+          loopCount: Infinity,
+
+          /**
+           * @property {boolean} showCursor 是否显示光标
+           * @property {string} cursorChar 光标的字符
+           * @property {boolean} autoInsertCss 是否将光标和fadeOut的CSS插入HTML <head>
+           */
+          showCursor: true,
+          cursorChar: '|',
+          autoInsertCss: true,
+
+          /**
+           * @property {string} attr 输入属性
+           * 例如：输入占位符，值或仅HTML文本
+           */
+          attr: null,
+
+          /**
+           * @property {boolean} bindInputFocusEvents 如果el是文本输入，则绑定到焦点和模糊
+           */
+          bindInputFocusEvents: false,
+
+          /**
+           * @property {string} contentType 明文的'html'或'null'
+           */
+          contentType: 'html',
+
+          /**
+           * 所有打字都已完成调用的回调函数
+           * @param {Typed} self
+           */
+          onComplete: (self) => {
+            console.log('所有打字都已完成调用的回调函数', self);
+          },
+
+          /**
+           * 在键入每个字符串之前调用的回调函数
+           * @param {number} arrayPos
+           * @param {Typed} self
+           */
+          preStringTyped: (arrayPos, self) => {
+            console.log('在键入每个字符串之前调用的回调函数', arrayPos, self);
+          },
+
+          /**
+           * 输入每个字符串后调用的回调函数
+           * @param {number} arrayPos
+           * @param {Typed} self
+           */
+          onStringTyped: (arrayPos, self) => {
+            console.log('输入每个字符串后调用的回调函数', arrayPos, self);
+          },
+
+          /**
+           * 在循环期间，在键入最后一个字符串之后调用的回调函数
+           * @param {Typed} self
+           */
+          onLastStringBackspaced: (self) => {
+            console.log('在循环期间，在键入最后一个字符串之后调用的回调函数', self);
+          },
+
+          /**
+           * 打字已经停止调用的回调函数
+           * @param {number} arrayPos
+           * @param {Typed} self
+           */
+          onTypingPaused: (arrayPos, self) => {
+            console.log('打字已经停止调用的回调函数', arrayPos, self);
+          },
+
+          /**
+           * 停止后开始键入调用的回调函数
+           * @param {number} arrayPos
+           * @param {Typed} self
+           */
+          onTypingResumed: (arrayPos, self) => {
+            console.log('停止后开始键入调用的回调函数', arrayPos, self);
+          },
+
+          /**
+           * 重置后调用的回调函数
+           * @param {Typed} self
+           */
+          onReset: (self) => {
+            console.log('重置后调用的回调函数', self);
+          },
+
+          /**
+           * 停止后调用的回调函数
+           * @param {number} arrayPos
+           * @param {Typed} self
+           */
+          onStop: (arrayPos, self) => {
+            console.log('停止后调用的回调函数', arrayPos, self);
+          },
+
+          /**
+           * 开始后调用的回调函数
+           * @param {number} arrayPos
+           * @param {Typed} self
+           */
+          onStart: (arrayPos, self) => {
+            console.log('开始后调用的回调函数', arrayPos, self);
+          },
+
+          /**
+           * 销毁后调用的回调函数
+           * @param {Typed} self
+           */
+          onDestroy: (self) => {
+            console.log('销毁后调用的回调函数', self);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
 ```
+
+以上是对该动画库的详细介绍，希望对大家有所帮助。最好还是要感谢作者的贡献，他的网站在这里：[Typed.js](www.mattboldt.com)
