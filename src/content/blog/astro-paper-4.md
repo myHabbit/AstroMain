@@ -7,6 +7,7 @@ featured: true
 ogImage: ../../assets/images/AstroPaper-v4.png
 tags:
   - release
+  - astro
 description: "AstroPaper v4: ensuring a smoother and more feature-rich blogging experience."
 ---
 

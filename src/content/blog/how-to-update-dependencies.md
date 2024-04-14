@@ -6,8 +6,8 @@ slug: how-to-update-dependencies
 featured: false
 draft: false
 ogImage: /assets/forrest-gump-quote.webp
-tags:
-  - FAQ
+# tags:
+#   - FAQ
 description: How to update project dependencies and AstroPaper template.
 ---
 
