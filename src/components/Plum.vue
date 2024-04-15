@@ -139,5 +139,6 @@ const mask = computed(() => "radial-gradient(circle, transparent, black);");
     :style="`mask-image: ${mask};--webkit-mask-image: ${mask};`"
   >
     <canvas ref="el" width="400" height="400" />
+    <h1>你好</h1>
   </div>
 </template>

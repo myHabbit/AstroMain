@@ -9,9 +9,7 @@ import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import { SOCIALS } from "@config";
-// import RandomBranches from "@components/Plum.jsx";
 const posts = await getCollection("blog");
-
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
@@ -22,15 +20,10 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 <Layout>
   <Header />
   <main id="main-content">
-    <!-- <RandomBranches/> -->
     <section id="hero">
       <h1>
         joyfulWei的<span>博客</span>
       </h1>
-
-      <!-- <p>
-        我热衷于探索创新的Web技术和设计，以打造出令人愉悦和富有创意的用户体验。我喜欢通过编码来解决问题，并且享受与团队合作共同构建出优质的Web应用程序的过程。我对用户界面设计和用户体验也有着浓厚的兴趣，努力确保我的应用程序既具有美观性，又具有良好的可用性和易用性。通过我的博客，我希望能够与大家分享我的技术见解、经验和最佳实践。我将探讨前端开发的各个方面，包括新的技术趋势、实用的开发技巧和解决常见问题的方法。
-      </p> -->
       <p>大家好！欢迎来到我的个人博客。</p>
       <p>在这个博客中，我将写下我的项目（我做什么/我是如何做的）、我的个人经历和一些面试笔记等。</p>
       {

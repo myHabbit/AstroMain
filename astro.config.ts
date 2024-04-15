@@ -15,6 +15,7 @@ export default defineConfig({
     }),
     react(),
     sitemap(),
+    vue()
   ],
   markdown: {
     remarkPlugins: [
@@ -38,3 +39,7 @@ export default defineConfig({
   },
   scopedStyleStrategy: "where",
 });
+function vue(): false | import("astro").AstroIntegration | (false | import("astro").AstroIntegration | null | undefined)[] | null | undefined {
+  throw new Error("Function not implemented.");
+}
+
