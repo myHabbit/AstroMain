@@ -15,7 +15,23 @@ description:
 我为这个博客主题制作了一些预定义的配色方案。可以将这些配色方案替换为原始配色方案。
 
 
-## Table of contents
+<!-- ## Table of contents -->
+
+## 目录
+
+- [目录](#目录)
+- [浅色配色方案](#浅色配色方案)
+  - [米色调](#米色调)
+  - [叶蓝](#叶蓝)
+  - [小指光](#小指光)
+- [深色配色方案](#深色配色方案)
+  - [Astro 1 原创深色主题](#astro-1-原创深色主题)
+  - [深牡蛎](#深牡蛎)
+  - [皮基深色](#皮基深色)
+  - [Astro dark (High Contrast)](#astro-dark-high-contrast)
+  - [天文暗（高对比度）](#天文暗高对比度)
+  - [Astro dark（AstroPaper 2 中的新默认深色主题）](#astro-darkastropaper-2-中的新默认深色主题)
+
 
 ## 浅色配色方案
 
@@ -73,7 +89,7 @@ html[data-theme="light"] {
 
 深色配色方案必须定义为 `html[data-theme="dark"]`.
 
-### AstroPaper 1 原创深色主题
+### Astro 1 原创深色主题
 
 ![AstroPaper 1 default dark theme](https://user-images.githubusercontent.com/53733092/215769153-13b0ad8d-5ba2-44b1-af06-e5ae61293f62.png)
 
