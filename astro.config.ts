@@ -15,7 +15,6 @@ export default defineConfig({
     }),
     react(),
     sitemap(),
-    vue()
   ],
   markdown: {
     remarkPlugins: [
