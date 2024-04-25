@@ -21,8 +21,8 @@ description: Vue front-end implements the function of random verification code (
 - [创建 securityCode.vue 组件](#创建-securitycodevue-组件)
 - [父组件中使用](#父组件中使用)
 - [完整代码](#完整代码)
-  - [子组件](#子组件)
-  - [父组件](#父组件)
+	- [子组件](#子组件)
+	- [父组件](#父组件)
 - [效果图展示](#效果图展示)
 - [总结](#总结)
 
@@ -128,7 +128,7 @@ export default {
 }
 </script>
 ```
-组件方法  
+- 组件方法  
 
 实现随机数生成、随机颜色生成及验证码的绘制。
 
