@@ -1,7 +1,7 @@
 ---
 author: Sat Naing
-pubDatetime: 2024-04-01T14:58:53Z
-modDatetime: 2024-04-10T12:05:56.066Z
+pubDatetime: 2024-04-018T14:58:53Z
+modDatetime: 2024-04-20T12:05:56.066Z
 title: axios的二次封装
 slug: Secondary Packaging of Axios in Vue3+TS Environment
 featured: true
