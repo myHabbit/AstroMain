@@ -23,7 +23,7 @@ Vue+Vite+TS 是当下 Vue 开发中非常流行的技术组合，它提供了快
 
 ## 需要的环境
 
-- 用 Vite 搭建一个 Vue3+TS 项目（确保已经全局安装了nodejs）。
+- 用 Vite 搭建一个 Vue3+TS 项目（确保已经全局安装了 nodejs）。
 
 ```bash
 npm create vue@latest
