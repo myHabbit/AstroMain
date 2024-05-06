@@ -14,19 +14,21 @@ description: Vue front-end implements the function of random verification code (
 
 动态验证码是一种在前端界面动态生成并显示的验证码，通常用于验证用户输入的有效性，特别是在需要防止恶意攻击或机器人自动提交的场景下。与传统的静态验证码不同，动态验证码每次刷新页面或点击刷新按钮时都会重新生成，增加了验证码的复杂度和安全性。
 
-##   目录
+## 目录
+
 - [目录](#目录)
 - [基础知识概述](#基础知识概述)
 - [准备工作](#准备工作)
 - [创建 securityCode.vue 组件](#创建-securitycodevue-组件)
 - [父组件中使用](#父组件中使用)
 - [完整代码](#完整代码)
-	- [子组件](#子组件)
-	- [父组件](#父组件)
+  - [子组件](#子组件)
+  - [父组件](#父组件)
+- [Vue3 完整代码](#vue3-完整代码)
+  - [子组件](#子组件-1)
+  - [父组件](#父组件-1)
 - [效果图展示](#效果图展示)
 - [总结](#总结)
-
-
 
 ## 基础知识概述
 
@@ -51,84 +53,86 @@ vue create my-project
 ```
 
 ## 创建 securityCode.vue 组件
+
 首先，我们需要创建一个名为`securityCode.vue`的 Vue 组件，此组件负责生成和显示验证码。
 
-- 组件结构  
+- 组件结构
 
 组件包括一个`<canvas>`元素，用于动态绘制验证码图像。
 
 ```vue
 <template>
-	<canvas id="s-canvas" :width="contentWidth" :height="contentHeight"></canvas>
+  <canvas id="s-canvas" :width="contentWidth" :height="contentHeight"></canvas>
 </template>
 ```
 
-- 组件属性  
+- 组件属性
 
 定义接受的属性与其默认值，包括验证码内容、字体大小范围、颜色设置等。
 
 ```vue
 <script>
 export default {
-		name: "securityCode",
-		props: {
-			identifyCode: {
-				type: String,
-				default: "",
-			},
-			fontSizeMin: {
-				type: Number,
-				default: 22,
-			},
-			fontSizeMax: {
-				type: Number,
-				default: 40,
-			},
-			backgroundColorMin: {
-				type: Number,
-				default: 180,
-			},
-			backgroundColorMax: {
-				type: Number,
-				default: 240,
-			},
-			colorMin: {
-				type: Number,
-				default: 50,
-			},
-			colorMax: {
-				type: Number,
-				default: 160,
-			},
-			lineColorMin: {
-				type: Number,
-				default: 40,
-			},
-			lineColorMax: {
-				type: Number,
-				default: 180,
-			},
-			dotColorMin: {
-				type: Number,
-				default: 0,
-			},
-			dotColorMax: {
-				type: Number,
-				default: 255,
-			},
-			contentWidth: {
-				type: Number,
-				default: 120,
-			},
-			contentHeight: {
-				type: Number,
-				default: 40,
-			},
-		},
-}
+  name: "securityCode",
+  props: {
+    identifyCode: {
+      type: String,
+      default: "",
+    },
+    fontSizeMin: {
+      type: Number,
+      default: 22,
+    },
+    fontSizeMax: {
+      type: Number,
+      default: 40,
+    },
+    backgroundColorMin: {
+      type: Number,
+      default: 180,
+    },
+    backgroundColorMax: {
+      type: Number,
+      default: 240,
+    },
+    colorMin: {
+      type: Number,
+      default: 50,
+    },
+    colorMax: {
+      type: Number,
+      default: 160,
+    },
+    lineColorMin: {
+      type: Number,
+      default: 40,
+    },
+    lineColorMax: {
+      type: Number,
+      default: 180,
+    },
+    dotColorMin: {
+      type: Number,
+      default: 0,
+    },
+    dotColorMax: {
+      type: Number,
+      default: 255,
+    },
+    contentWidth: {
+      type: Number,
+      default: 120,
+    },
+    contentHeight: {
+      type: Number,
+      default: 40,
+    },
+  },
+};
 </script>
 ```
-- 组件方法  
+
+- 组件方法
 
 实现随机数生成、随机颜色生成及验证码的绘制。
 
@@ -149,7 +153,7 @@ export default {
 	},
 ```
 
-- 生命周期和监听器  
+- 生命周期和监听器
 
 当组件加载或验证码变更时，调用`drawPic`方法，自动触发绘制。
 
@@ -167,7 +171,7 @@ export default {
 
 ## 父组件中使用
 
-- 引入和注册  
+- 引入和注册
 
 在登录页面的 Vue 文件中，引入并注册`securityCode`组件。
 
@@ -175,16 +179,15 @@ export default {
 <script>
 import SecurityCode from "@/components/securityCode";
 export default {
-	components: {
-		SecurityCode
-	},
-	// 数据和方法略
-}
+  components: {
+    SecurityCode,
+  },
+  // 数据和方法略
+};
 </script>
 ```
 
-
-- 页面布局  
+- 页面布局
 
 在登录表单中添加验证码组件的使用代码。
 
@@ -202,8 +205,8 @@ export default {
 
 ```
 
-- 方法实现  
-  
+- 方法实现
+
 实现刷新和生成验证码的方法，以及提交表单时的验证逻辑。
 
 ```javascript
@@ -223,158 +226,158 @@ methods: {
 ```
 
 ## 完整代码
- 
+
 ### 子组件
 
 ```vue
 <template>
-	<canvas id="s-canvas" :width="contentWidth" :height="contentHeight"></canvas>
+  <canvas id="s-canvas" :width="contentWidth" :height="contentHeight"></canvas>
 </template>
 <script>
-	export default {
-		name: "securityCode",
-		props: {
-			identifyCode: {
-				type: String,
-				default: "",
-			},
-			fontSizeMin: {
-				type: Number,
-				default: 22,
-			},
-			fontSizeMax: {
-				type: Number,
-				default: 40,
-			},
-			backgroundColorMin: {
-				type: Number,
-				default: 180,
-			},
-			backgroundColorMax: {
-				type: Number,
-				default: 240,
-			},
-			colorMin: {
-				type: Number,
-				default: 50,
-			},
-			colorMax: {
-				type: Number,
-				default: 160,
-			},
-			lineColorMin: {
-				type: Number,
-				default: 40,
-			},
-			lineColorMax: {
-				type: Number,
-				default: 180,
-			},
-			dotColorMin: {
-				type: Number,
-				default: 0,
-			},
-			dotColorMax: {
-				type: Number,
-				default: 255,
-			},
-			contentWidth: {
-				type: Number,
-				default: 120,
-			},
-			contentHeight: {
-				type: Number,
-				default: 40,
-			},
-		},
-		methods: {
-			// 生成一个随机数
-			randomNum(min, max) {
-				return Math.floor(Math.random() * (max - min) + min);
-			},
-			// 生成一个随机的颜色
-			randomColor(min, max) {
-				let r = this.randomNum(min, max);
-				let g = this.randomNum(min, max);
-				let b = this.randomNum(min, max);
-				return "rgb(" + r + "," + g + "," + b + ")";
-			},
-			drawPic() {
-				let canvas = document.getElementById("s-canvas");
-				let ctx = canvas.getContext("2d");
-				ctx.textBaseline = "bottom";
-				// 绘制背景
-				ctx.fillStyle = this.randomColor(
-					this.backgroundColorMin,
-					this.backgroundColorMax
-				);
-				ctx.fillRect(0, 0, this.contentWidth, this.contentHeight);
-				// 绘制文字
-				for (let i = 0; i < this.identifyCode.length; i++) {
-					this.drawText(ctx, this.identifyCode[i], i);
-				}
-				this.drawLine(ctx);
-				this.drawDot(ctx);
-			},
-			drawText(ctx, txt, i) {
-				ctx.fillStyle = this.randomColor(this.colorMin, this.colorMax);
-				ctx.font =
-					this.randomNum(this.fontSizeMin, this.fontSizeMax) + "px SimHei";
-				let x = (i + 1) * (this.contentWidth / (this.identifyCode.length + 1));
-				let y = this.randomNum(this.fontSizeMax, this.contentHeight - 5);
-				var deg = this.randomNum(-45, 45);
-				// 修改坐标原点和旋转角度
-				ctx.translate(x, y);
-				ctx.rotate((deg * Math.PI) / 330);
-				ctx.fillText(txt, 0, 0);
-				// 恢复坐标原点和旋转角度
-				ctx.rotate((-deg * Math.PI) / 330);
-				ctx.translate(-x, -y);
-			},
-			drawLine(ctx) {
-				// 绘制干扰线
-				for (let i = 0; i < 3; i++) {
-					ctx.strokeStyle = this.randomColor(
-						this.lineColorMin,
-						this.lineColorMax
-					);
-					ctx.beginPath();
-					ctx.moveTo(
-						this.randomNum(0, this.contentWidth),
-						this.randomNum(0, this.contentHeight)
-					);
-					ctx.lineTo(
-						this.randomNum(0, this.contentWidth),
-						this.randomNum(0, this.contentHeight)
-					);
-					ctx.stroke();
-				}
-			},
-			drawDot(ctx) {
-				// 绘制干扰点
-				for (let i = 0; i < 80; i++) {
-					ctx.fillStyle = this.randomColor(0, 255);
-					ctx.beginPath();
-					ctx.arc(
-						this.randomNum(0, this.contentWidth),
-						this.randomNum(0, this.contentHeight),
-						1,
-						0,
-						2 * Math.PI
-					);
-					ctx.fill();
-				}
-			},
-		},
-		watch: {
-			identifyCode() {
-				this.drawPic();
-			},
-		},
-		mounted() {
-			this.drawPic();
-		},
-	};
+export default {
+  name: "securityCode",
+  props: {
+    identifyCode: {
+      type: String,
+      default: "",
+    },
+    fontSizeMin: {
+      type: Number,
+      default: 22,
+    },
+    fontSizeMax: {
+      type: Number,
+      default: 40,
+    },
+    backgroundColorMin: {
+      type: Number,
+      default: 180,
+    },
+    backgroundColorMax: {
+      type: Number,
+      default: 240,
+    },
+    colorMin: {
+      type: Number,
+      default: 50,
+    },
+    colorMax: {
+      type: Number,
+      default: 160,
+    },
+    lineColorMin: {
+      type: Number,
+      default: 40,
+    },
+    lineColorMax: {
+      type: Number,
+      default: 180,
+    },
+    dotColorMin: {
+      type: Number,
+      default: 0,
+    },
+    dotColorMax: {
+      type: Number,
+      default: 255,
+    },
+    contentWidth: {
+      type: Number,
+      default: 120,
+    },
+    contentHeight: {
+      type: Number,
+      default: 40,
+    },
+  },
+  methods: {
+    // 生成一个随机数
+    randomNum(min, max) {
+      return Math.floor(Math.random() * (max - min) + min);
+    },
+    // 生成一个随机的颜色
+    randomColor(min, max) {
+      let r = this.randomNum(min, max);
+      let g = this.randomNum(min, max);
+      let b = this.randomNum(min, max);
+      return "rgb(" + r + "," + g + "," + b + ")";
+    },
+    drawPic() {
+      let canvas = document.getElementById("s-canvas");
+      let ctx = canvas.getContext("2d");
+      ctx.textBaseline = "bottom";
+      // 绘制背景
+      ctx.fillStyle = this.randomColor(
+        this.backgroundColorMin,
+        this.backgroundColorMax
+      );
+      ctx.fillRect(0, 0, this.contentWidth, this.contentHeight);
+      // 绘制文字
+      for (let i = 0; i < this.identifyCode.length; i++) {
+        this.drawText(ctx, this.identifyCode[i], i);
+      }
+      this.drawLine(ctx);
+      this.drawDot(ctx);
+    },
+    drawText(ctx, txt, i) {
+      ctx.fillStyle = this.randomColor(this.colorMin, this.colorMax);
+      ctx.font =
+        this.randomNum(this.fontSizeMin, this.fontSizeMax) + "px SimHei";
+      let x = (i + 1) * (this.contentWidth / (this.identifyCode.length + 1));
+      let y = this.randomNum(this.fontSizeMax, this.contentHeight - 5);
+      var deg = this.randomNum(-45, 45);
+      // 修改坐标原点和旋转角度
+      ctx.translate(x, y);
+      ctx.rotate((deg * Math.PI) / 330);
+      ctx.fillText(txt, 0, 0);
+      // 恢复坐标原点和旋转角度
+      ctx.rotate((-deg * Math.PI) / 330);
+      ctx.translate(-x, -y);
+    },
+    drawLine(ctx) {
+      // 绘制干扰线
+      for (let i = 0; i < 3; i++) {
+        ctx.strokeStyle = this.randomColor(
+          this.lineColorMin,
+          this.lineColorMax
+        );
+        ctx.beginPath();
+        ctx.moveTo(
+          this.randomNum(0, this.contentWidth),
+          this.randomNum(0, this.contentHeight)
+        );
+        ctx.lineTo(
+          this.randomNum(0, this.contentWidth),
+          this.randomNum(0, this.contentHeight)
+        );
+        ctx.stroke();
+      }
+    },
+    drawDot(ctx) {
+      // 绘制干扰点
+      for (let i = 0; i < 80; i++) {
+        ctx.fillStyle = this.randomColor(0, 255);
+        ctx.beginPath();
+        ctx.arc(
+          this.randomNum(0, this.contentWidth),
+          this.randomNum(0, this.contentHeight),
+          1,
+          0,
+          2 * Math.PI
+        );
+        ctx.fill();
+      }
+    },
+  },
+  watch: {
+    identifyCode() {
+      this.drawPic();
+    },
+  },
+  mounted() {
+    this.drawPic();
+  },
+};
 </script>
 ```
 
@@ -396,55 +399,249 @@ methods: {
 	</el-button>
 </el-form-item>
 <script>
-	//导入组件
-	import SecurityCode from "@/components/securityCode";
-	export default {
-		components: {//注册
-			SecurityCode
+//导入组件
+import SecurityCode from "@/components/securityCode";
+export default {
+	components: {//注册
+		SecurityCode
+	},
+   data() {
+     identifyCode: "",//随机组合字符串
+		inputCode: "", //text框输入的验证码
+     },
+    mounted() {
+		this.refreshCode();
+	},
+   methods: {
+		//初始化验证码
+		refreshCode() {
+			this.inputCode = ''
+			this.identifyCode = ""; //输入框置空
+			this.makeCode(4); //验证码长度为4
 		},
-    data() {
-      identifyCode: "",//随机组合字符串
-			inputCode: "", //text框输入的验证码
-      },
-     mounted() {
-			this.refreshCode();
+		//随机切换验证码
+		makeCode(length) {
+			let code = '';
+			for (let i = 0; i < length; i++) {
+				const r = Math.floor(Math.random() * 36);
+				if (r < 10) {
+					code += r;
+				} else {
+					code += String.fromCharCode(r - 10 + 65);
+				}
+			}
+			this.identifyCode = code
+			localStorage.setItem('code', code);
+			console.log(this.identifyCode);
 		},
-    methods: {
-			//初始化验证码
-			refreshCode() {
-				this.inputCode = ''
-				this.identifyCode = ""; //输入框置空
-				this.makeCode(4); //验证码长度为4
-			},
-			//随机切换验证码
-			makeCode(length) {
-				let code = '';
-				for (let i = 0; i < length; i++) {
-					const r = Math.floor(Math.random() * 36);
-					if (r < 10) {
-						code += r;
-					} else {
-						code += String.fromCharCode(r - 10 + 65);
-					}
-				}
-				this.identifyCode = code
-				localStorage.setItem('code', code);
-				console.log(this.identifyCode);
-			},
-      submitForm() {
-				const code = this.inputCode.toLowerCase();
-				const originalCode = localStorage.getItem('code').toLowerCase();
-				if (!code) {
-					this.$message.error('请输入验证码！');
-					return
-				} else if (code !== originalCode) {
-					this.$message.error('验证码输入错误！');
-					this.refreshCode()
-					return
-				}
-			
-        }
-    }
+     submitForm() {
+			const code = this.inputCode.toLowerCase();
+			const originalCode = localStorage.getItem('code').toLowerCase();
+			if (!code) {
+				this.$message.error('请输入验证码！');
+				return
+			} else if (code !== originalCode) {
+				this.$message.error('验证码输入错误！');
+				this.refreshCode()
+				return
+			}
+
+       }
+   }
+</script>
+```
+
+## Vue3 完整代码
+
+### 子组件
+
+```vue
+<template>
+  <canvas
+    ref="canvasRef"
+    id="s-canvas"
+    :width="contentWidth"
+    :height="contentHeight"
+  ></canvas>
+</template>
+
+<script setup lang="ts">
+import { onMounted, watch, ref } from "vue";
+const canvasRef = ref<HTMLCanvasElement | null>(null);
+
+const props = defineProps({
+  identifyCode: {
+    type: String,
+    default: "",
+  },
+  fontSizeMin: {
+    type: Number,
+    default: 22,
+  },
+  fontSizeMax: {
+    type: Number,
+    default: 40,
+  },
+  backgroundColorMin: {
+    type: Number,
+    default: 180,
+  },
+  backgroundColorMax: {
+    type: Number,
+    default: 240,
+  },
+  colorMin: {
+    type: Number,
+    default: 50,
+  },
+  colorMax: {
+    type: Number,
+    default: 160,
+  },
+  lineColorMin: {
+    type: Number,
+    default: 40,
+  },
+  lineColorMax: {
+    type: Number,
+    default: 180,
+  },
+  dotColorMin: {
+    type: Number,
+    default: 0,
+  },
+  dotColorMax: {
+    type: Number,
+    default: 255,
+  },
+  contentWidth: {
+    type: Number,
+    default: 120,
+  },
+  contentHeight: {
+    type: Number,
+    default: 40,
+  },
+});
+
+const randomNum = (min: number, max: number): number => {
+  return Math.floor(Math.random() * (max - min) + min);
+};
+
+const randomColor = (min: number, max: number): string => {
+  let r = randomNum(min, max);
+  let g = randomNum(min, max);
+  let b = randomNum(min, max);
+  return `rgb(${r},${g},${b})`;
+};
+
+const drawPic = () => {
+  let canvas = canvasRef.value;
+
+  let ctx = canvas!.getContext("2d");
+  if (!ctx) return;
+  ctx.textBaseline = "bottom";
+  ctx.fillStyle = randomColor(
+    props.backgroundColorMin,
+    props.backgroundColorMax
+  );
+  ctx.fillRect(0, 0, props.contentWidth, props.contentHeight);
+
+  for (let i = 0; i < props.identifyCode.length; i++) {
+    drawText(ctx, props.identifyCode[i], i);
+  }
+
+  drawLine(ctx);
+  drawDot(ctx);
+};
+
+const drawText = (ctx: CanvasRenderingContext2D, txt: string, i: number) => {
+  ctx.fillStyle = randomColor(props.colorMin, props.colorMax);
+  ctx.font = `${randomNum(props.fontSizeMin, props.fontSizeMax)}px SimHei`;
+  let x = (i + 1) * (props.contentWidth / (props.identifyCode.length + 1));
+  let y = randomNum(props.fontSizeMax, props.contentHeight - 5);
+  const deg = randomNum(-45, 45);
+  ctx.translate(x, y);
+  ctx.rotate((deg * Math.PI) / 180);
+  ctx.fillText(txt, 0, 0);
+  ctx.rotate((-deg * Math.PI) / 180);
+  ctx.translate(-x, -y);
+};
+
+const drawLine = (ctx: CanvasRenderingContext2D) => {
+  for (let i = 0; i < 3; i++) {
+    ctx.strokeStyle = randomColor(props.lineColorMin, props.lineColorMax);
+    ctx.beginPath();
+    ctx.moveTo(
+      randomNum(0, props.contentWidth),
+      randomNum(0, props.contentHeight)
+    );
+    ctx.lineTo(
+      randomNum(0, props.contentWidth),
+      randomNum(0, props.contentHeight)
+    );
+    ctx.stroke();
+  }
+};
+
+const drawDot = (ctx: CanvasRenderingContext2D) => {
+  for (let i = 0; i < 80; i++) {
+    ctx.fillStyle = randomColor(props.dotColorMin, props.dotColorMax);
+    ctx.beginPath();
+    ctx.arc(
+      randomNum(0, props.contentWidth),
+      randomNum(0, props.contentHeight),
+      1,
+      0,
+      2 * Math.PI
+    );
+    ctx.fill();
+  }
+};
+
+onMounted(() => {
+  drawPic();
+});
+watch(() => props.identifyCode, drawPic);
+</script>
+```
+
+### 父组件
+
+```vue
+<el-form-item prop="pass" label="验证码" class="row flex flex-row">
+    <div class=" row space-between">
+        <el-input type="text" v-model="ruleForm.inputCode" autocomplete="off"></el-input>
+        <div @click="refreshCode">
+            <!--验证码组件-->
+            <SecurityCode :identifyCode="identifyCode"></SecurityCode>
+        </div>
+    </div>
+</el-form-item>
+<script setup lang="ts">
+import { reactive, ref, onMounted } from "vue";
+const ruleForm = reactive({
+  inputCode: "",
+});
+// 验证码模块
+const refreshCode = () => {
+  ruleForm.inputCode = "";
+  identifyCode.value = "";
+  makeCode(4);
+};
+onMounted(() => {
+  refreshCode();
+});
+
+const makeCode = (length: number) => {
+  let code = "";
+  for (let i = 0; i < length; i++) {
+    const r = Math.floor(Math.random() * 36);
+    code += r < 10 ? r.toString() : String.fromCharCode(r - 10 + 65);
+  }
+  identifyCode.value = code;
+  localStorage.setItem(localStorageKey, code);
+};
 </script>
 ```
 
@@ -452,7 +649,6 @@ methods: {
 
 ![验证码](../../assets/images/logincode.png)
 
-
-## 总结  
+## 总结
 
 通过构建一个 Vue 组件实现了验证码的动态生成与验证功能，增强了用户表单的安全性。此验证码组件不仅可用于登录表单，还可以扩展到其他需要验证码验证的场景。 感谢阅读✌🏻
