@@ -19,6 +19,11 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 ---
 
 <Layout>
+  <div class="layer1"></div>
+  <div class="layer2"></div>
+  <div class="layer3"></div>
+  <!-- <div class="layer4"></div> -->
+  <!-- <div class="layer5"></div> -->
   <!-- <Ring/> -->
   <Header />
   <main id="main-content">
@@ -98,6 +103,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
 </Layout>
 
 <style>
+  @import "../styles/index.scss";
   /* ===== Hero Section ===== */
   #hero {
     @apply pb-6 pt-8;
@@ -142,4 +148,3 @@ const socialCount = SOCIALS.filter(social => social.active).length;
     font-weight: 700;
   }
 </style>
-

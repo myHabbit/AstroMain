@@ -18,6 +18,9 @@ const { currentPage, totalPages, paginatedPosts } = Astro.props;
 ---
 
 <Layout title={`Posts | ${SITE.title}`}>
+  <div class="layer1"></div>
+  <div class="layer2"></div>
+  <div class="layer3"></div>
   <Header activeNav="posts" />
   <Main pageTitle="Posts" pageDesc="我发布的所有文章。">
     <ul>
@@ -38,3 +41,7 @@ const { currentPage, totalPages, paginatedPosts } = Astro.props;
 
   <Footer noMarginTop={totalPages > 1} />
 </Layout>
+
+<style>
+  @import "../styles/index.scss";
+</style>
