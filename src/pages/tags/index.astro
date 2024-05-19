@@ -14,9 +14,6 @@ let tags = getUniqueTags(posts);
 ---
 
 <Layout title={`Tags | ${SITE.title}`}>
-  <div class="layer1"></div>
-  <div class="layer2"></div>
-  <div class="layer3"></div>
   <Header activeNav="tags" />
   <Main pageTitle="Tags" pageDesc="帖子中使用的所有标签。">
     <ul>
@@ -25,7 +22,3 @@ let tags = getUniqueTags(posts);
   </Main>
   <Footer />
 </Layout>
-
-<style>
-  @import "../../styles/index.scss";
-</style>
