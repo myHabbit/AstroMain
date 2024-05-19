@@ -20,7 +20,7 @@ $duration: 200s;
         border-radius: 50%;
         left: 0;
         top: 0;
-        box-shadow: getShadows(100);
+        box-shadow: getShadows(70);
         animation: moveUp $duration linear infinite;
         z-index: -999;
         &::after {
