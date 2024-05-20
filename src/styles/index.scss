@@ -10,33 +10,65 @@
 
 $duration: 200s;
 
-@for $i from 1 through 5 {
-    .layer#{$i} {
-        $size: #{$i+2}px;
-        $duration: calc($duration / pow(2, $i - 1));
-        position: fixed;
-        width: $size;
-        height: $size;
-        border-radius: 50%;
-        left: 0;
-        top: 0;
-        box-shadow: getShadows(70);
-        animation: moveUp $duration linear infinite;
-        z-index: -999;
-        &::after {
-            content: '';
+@media screen and (min-width: 768px) {
+    @for $i from 1 through 5 {
+        .layer#{$i} {
+            $size: #{$i+2}px;
+            $duration: calc($duration / pow(2, $i - 1));
             position: fixed;
+            width: $size;
+            height: $size;
+            border-radius: 50%;
             left: 0;
-            top: 100vh;
-            border-radius: inherit;
-            width: inherit;
-            height: inherit;
-            box-shadow: inherit;
-        }
-    }
+            top: 0;
+            box-shadow: getShadows(70);
+            animation: moveUp $duration linear infinite;
+            z-index: -999;
 
+            &::after {
+                content: '';
+                position: fixed;
+                left: 0;
+                top: 100vh;
+                border-radius: inherit;
+                width: inherit;
+                height: inherit;
+                box-shadow: inherit;
+            }
+        }
+
+    }
 }
 
+@media screen and (max-width: 768px) {
+    @for $i from 1 through 5 {
+        .layer#{$i} {
+            $size: #{$i+2}px;
+            $duration: calc($duration / pow(2, $i - 1));
+            position: fixed;
+            width: $size;
+            height: $size;
+            border-radius: 50%;
+            left: 0;
+            top: 0;
+            box-shadow: getShadows(25);
+            animation: moveUp $duration linear infinite;
+            z-index: -999;
+
+            &::after {
+                content: '';
+                position: fixed;
+                left: 0;
+                top: 100vh;
+                border-radius: inherit;
+                width: inherit;
+                height: inherit;
+                box-shadow: inherit;
+            }
+        }
+
+    }
+}
 
 
 @keyframes moveUp {
