@@ -13,7 +13,7 @@ $duration: 200s;
 @for $i from 1 through 5 {
     .layer#{$i} {
         $size: #{$i+2}px;
-        $duration: $duration/ pow(2, $i - 1);
+        $duration: calc($duration / pow(2, $i - 1));
         position: fixed;
         width: $size;
         height: $size;
