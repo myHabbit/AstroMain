@@ -4,7 +4,7 @@ export const SITE: Site = {
   website: "https://joyfulWei.cn", // replace this with your deployed domain
   author: "Sat Naing",
   desc: "A minimal, responsive and SEO-friendly Astro blog theme.",
-  title: "AstroBlog",
+  title: "Voyager",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: false,
   postPerPage: 5,
